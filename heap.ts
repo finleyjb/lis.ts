@@ -1,34 +1,7 @@
-// deno-lint-ignore-file no-explicit-any ban-types
-import {
-  Exp,
-  List,
-  makeBoolean,
-  makeFunction,
-  makeNumber,
-  Number,
-  Symbol,
-} from "./ast.ts";
+import { Exp, makeFunction, Symbol } from "./ast.ts";
+import { builtins } from "./builtins.ts";
 
 export class Heap {
-  private readonly builtins: ReadonlyMap<string, Function> = new Map<
-    string,
-    Function
-  >(
-    [
-      ["+", (val1: Exp, val2: Exp) => makeNumber(val1.val + val2.val)],
-      ["-", (val1: Exp, val2: Exp) => makeNumber(val1.val - val2.val)],
-      ["*", (val1: Exp, val2: Exp) => makeNumber(val1.val * val2.val)],
-      ["/", (val1: Exp, val2: Exp) => makeNumber(val1.val / val2.val)],
-      [">", (val1: Exp, val2: Exp) => makeBoolean(val1.val > val2)],
-      [">=", (val1: Exp, val2: Exp) => makeBoolean(val1.val >= val2.val)],
-      ["<", (val1: Exp, val2: Exp) => makeBoolean(val1.val < val2.val)],
-      ["<=", (val1: Exp, val2: Exp) => makeBoolean(val1.val <= val2.val)],
-      ["==", (val1: Exp, val2: Exp) => makeBoolean(val1.val === val2.val)],
-      ["abs", (val: Number) => makeNumber(Math.abs(val.val))],
-      ["append", (l: List, val: Exp) => l.val.concat(val)],
-    ],
-  );
-
   private readonly userHeap: Map<string, Exp> = new Map();
 
   getSymbol(sym: Symbol | string) {
@@ -37,7 +10,7 @@ export class Heap {
     if (this.userHeap.has(name)) {
       val = this.userHeap.get(name);
     } else {
-      val = makeFunction(this.builtins.get(name)!);
+      val = makeFunction(builtins.get(name)!);
     }
     return val;
   }

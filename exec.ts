@@ -4,7 +4,6 @@ import { Heap } from "./heap.ts";
 const heap = new Heap();
 
 export function exec(expression: Exp): Exp | undefined {
-  console.log(expression);
   if (expression.kind === "symbol") {
     return heap.getSymbol(expression as Symbol);
   } else if (expression.kind === "number") {
@@ -33,6 +32,5 @@ export function callFn(fn: Exp, ...args: Exp[]): Exp {
 
 export function runSrc(source: string) {
   const exp = parse(tokenize(source));
-  console.log(exp);
   return exec(exp);
 }
