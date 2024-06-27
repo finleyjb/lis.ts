@@ -1,5 +1,3 @@
-import { assertIsDefined } from "./assert.ts";
-
 export type Tokens = string[];
 
 export function tokenize(source: string): Tokens {
