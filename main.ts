@@ -4,9 +4,7 @@ import { exec, runSrc } from "./exec.ts";
 import { Heap } from "./heap.ts";
 import { repl } from "./repl.ts";
 
-const heap = new Heap();
 const args = parseArgs(Deno.args)._;
-console.log(args);
 if (import.meta.main) {
   if (!args.length) {
     await repl();
