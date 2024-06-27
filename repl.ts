@@ -11,7 +11,7 @@ export async function repl() {
         console.log((runSrc(inputTxt) as Exp).val);
       }
     } catch (e) {
-        console.log(`\nException: ${e}`);
+      console.log(`\nException: ${e}`);
     }
   }
   Deno.exit(0);
