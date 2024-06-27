@@ -1,18 +1,21 @@
 import { parseArgs } from "jsr:@std/cli/parse-args";
-import { parse, tokenize } from "./ast.ts";
-import { exec } from "./exec.ts";
+import { Exp, parse, tokenize } from "./ast.ts";
+import { exec, runSrc } from "./exec.ts";
 import { Heap } from "./heap.ts";
 import { repl } from "./repl.ts";
 
-const flags = parseArgs(Deno.args, {
-  boolean: ["repl"],
-  default: { repl: true },
-});
-
 const heap = new Heap();
+const args = parseArgs(Deno.args)._;
+console.log(args);
 if (import.meta.main) {
-  if (flags.repl) {
+  if (!args.length) {
     await repl();
+  }
+
+  for (const fname of args) {
+    const text = await Deno.readTextFile(fname);
+    console.log((runSrc(text) as Exp).val);
+    Deno.exit(0);
   }
 
   const exp = parse(tokenize("(if (== 1 1) 1 1.1)"));
